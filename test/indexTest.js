@@ -238,13 +238,6 @@ describe('index.js', function () {
       expect(arraysEqual(newArr, [1, 2, 3])).to.equal(true)
     })
 
-    it('runs materially quicker when run on a pre-sorted array', function () {
-      const unsortedTime = bench(fi.uniq, 5, [largeUnsortedArr, false], this)
-      const sortedTime = bench(fi.uniq, 5, [largeSortedArr, true], this)
-      console.log(unsortedTime, sortedTime)
-      expect(sortedTime < (unsortedTime*.75)).to.equal(true)
-    })
-
   })
 
   describe('keys', function () {
@@ -273,11 +266,19 @@ describe('index.js', function () {
   })
 
   describe('functions', function () {
-    const mathMethods = Object.getOwnPropertyNames(Math)
-    console.log(fi.functions(Math))
+    const testObject = {
+      a: "",
+      z: () => null,
+      p: "",
+      c: () => null,
+      k: () => null,
+    }
 
-    it('returns a collection of the names of every method in an object', function () {
-      expect(arraysEqual(fi.functions(Math), mathMethods)).to.equal(true)
+    const final = ["c", "k", "z"]
+
+
+    it('returns a sorted collection of the names of every method in an object', function () {
+      expect(arraysEqual(fi.functions(testObject), final)).to.equal(true)
     })
   })
 

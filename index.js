@@ -140,16 +140,36 @@ fi = (function() {
       }
     },
 
-    keys: function(collection) {
-      return Object.keys(collection)
+    keys: function(obj) {
+      // Using for loop
+      const keys = []
+      for (let key in obj){
+        keys.push(key)
+      }
+      return keys
     },
 
     values: function(collection) {
-      return Object.values(collection)
+      // Using for loop
+      const values = []
+      for (let key in collection){
+        values.push(collection[key])
+      }
+      return values
+
+      // Using the custom 'map' method from above
+      // return this.map(collection, (value) => value)
+
     },
 
     functions: function(collection) {
-      return Object.getOwnPropertyNames(collection)
+      const functionNames = []
+  
+      for (let key in collection) {
+        typeof collection[key] === "function" ? functionNames.push(key) : null
+      }
+
+      return functionNames.sort()
     },
 
   }
