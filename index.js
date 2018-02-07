@@ -5,7 +5,7 @@ fi = (function() {
     },
 
     each: function(collection, iteratee) {
-      let newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
+      const newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
 
       for (let idx = 0; idx < newCollection.length; idx++)
         iteratee(newCollection[idx])
@@ -113,10 +113,10 @@ fi = (function() {
     },
 
     uniqSorted: function(collection, iteratee) {
-      let sorted = [collection[0]]
+      const sorted = [collection[0]]
       for (let idx = 1; idx < collection.length; idx++) {
-        if (sorted[idx-1] === collection[idx]) continue
-        sorted.push(collection[idx])
+        if (sorted[idx-1] !== collection[idx])
+          sorted.push(collection[idx])
       }
       return sorted
     },
@@ -140,16 +140,38 @@ fi = (function() {
       }
     },
 
-    keys: function(collection) {
-      return Object.keys(collection)
+    keys: function(obj) {
+      // Using for loop
+      const keys = []
+      for (let key in obj){
+        keys.push(key)
+      }
+      return keys
     },
 
-    values: function(collection) {
-      return Object.values(collection)
+    values: function(obj) {
+      // Using for loop
+      const values = []
+      for (let key in obj){
+        values.push(obj[key])
+      }
+      return values
+
+      // Using the custom 'map' method from above
+      // return this.map(obj, (value) => value)
+
     },
 
-    functions: function(collection) {
-      return Object.getOwnPropertyNames(collection)
+    functions: function(obj) {
+      const functionNames = []
+  
+      for (let key in obj) {
+        if (typeof obj[key] === "function"){
+          functionNames.push(key)
+        }
+      }
+
+      return functionNames.sort()
     },
 
   }

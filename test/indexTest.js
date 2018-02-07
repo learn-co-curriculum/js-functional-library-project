@@ -234,15 +234,7 @@ describe('index.js', function () {
 
     it('removes duplicate values from an array when an iteratee is applied', function () {
       const newArr = fi.uniq([1, 2, 2, 3, 4, 6, 9], false, (val => val % 3))
-      console.log(newArr)
       expect(arraysEqual(newArr, [1, 2, 3])).to.equal(true)
-    })
-
-    it('runs materially quicker when run on a pre-sorted array', function () {
-      const unsortedTime = bench(fi.uniq, 5, [largeUnsortedArr, false], this)
-      const sortedTime = bench(fi.uniq, 5, [largeSortedArr, true], this)
-      console.log(unsortedTime, sortedTime)
-      expect(sortedTime < (unsortedTime*.75)).to.equal(true)
     })
 
   })
@@ -273,11 +265,19 @@ describe('index.js', function () {
   })
 
   describe('functions', function () {
-    const mathMethods = Object.getOwnPropertyNames(Math)
-    console.log(fi.functions(Math))
+    const testObject = {
+      a: "",
+      z: () => null,
+      p: "",
+      c: () => null,
+      k: () => null,
+    }
 
-    it('returns a collection of the names of every method in an object', function () {
-      expect(arraysEqual(fi.functions(Math), mathMethods)).to.equal(true)
+    const final = ["c", "k", "z"]
+
+
+    it('returns a sorted collection of the names of every method in an object', function () {
+      expect(arraysEqual(fi.functions(testObject), final)).to.equal(true)
     })
   })
 
