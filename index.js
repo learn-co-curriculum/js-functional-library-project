@@ -166,7 +166,9 @@ fi = (function() {
       const functionNames = []
   
       for (let key in obj) {
-        typeof obj[key] === "function" ? functionNames.push(key) : null
+        if (typeof obj[key] === "function"){
+          functionNames.push(key)
+        }
       }
 
       return functionNames.sort()
