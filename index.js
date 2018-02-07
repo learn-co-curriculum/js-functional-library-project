@@ -1,11 +1,11 @@
-const fi = (function() {
+fi = (function() {
   return {
     libraryMethod: function() {
       return 'Start by reading https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0'
     },
 
     each: function(collection, iteratee) {
-      const newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
+      let newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
 
       for (let idx = 0; idx < newCollection.length; idx++)
         iteratee(newCollection[idx])
@@ -25,31 +25,24 @@ const fi = (function() {
       return newArr
     },
 
+    reduce: function(collection, iteratee, acc) {
+      if (!(collection instanceof Array))
+        collection = Object.values(collection)
 
-		reduce: function(c = [], callback = () => {}, acc) {
-			let collection = c.slice(0)
+      for (let idx = 0; idx < collection.length; idx++)
+        acc = iteratee(acc, collection[idx], collection)
 
-			if (!acc) {
-				acc = collection[0]
-				collection = collection.slice(1)
-			}
-
-			let len = collection.length;
-
-			for (let i = 0; i < len; i++) {
-				acc = callback(acc, collection[i], collection)
-			}
-			return acc;
-		},
+      return acc
+    },
 
     find: function(collection, predicate) {
       if (!(collection instanceof Array))
         collection = Object.values(collection)
 
       for (let idx = 0; idx < collection.length; idx++)
-        if (predicate(collection[idx])) return collection[idx]
+        if (predicate(collection[idx])) return true
 
-      return undefined
+      return false
     },
 
     filter: function(collection, predicate) {
@@ -81,11 +74,24 @@ const fi = (function() {
       return collection.filter(el => !badBad.has(el))
     },
 
+    // works like insertion sort
+    iSortLast: function(arr) {
+      let currIdx = arr.length-1
+      while(currIdx > 0 && arr[currIdx-1] > arr[currIdx]) {
+        const temp = arr[currIdx-1]
+        arr[currIdx-1] = arr[currIdx]
+        arr[currIdx] = temp
+        currIdx--
+      }
+    },
+
     sortBy: function(collection, callback) {
-      const newArr = [...collection]
-      return newArr.sort(function(a, b) {
-        return callback(a) - callback(b)
-      })
+      const newArr = []
+      for (let val of collection) {
+        newArr.push(callback(val))
+        this.iSortLast(newArr)
+      }
+      return newArr
     },
 
     unpack: function(receiver, arr) {
@@ -107,10 +113,10 @@ const fi = (function() {
     },
 
     uniqSorted: function(collection, iteratee) {
-      const sorted = [collection[0]]
+      let sorted = [collection[0]]
       for (let idx = 1; idx < collection.length; idx++) {
-        if (sorted[idx-1] !== collection[idx])
-          sorted.push(collection[idx])
+        if (sorted[idx-1] === collection[idx]) continue
+        sorted.push(collection[idx])
       }
       return sorted
     },
@@ -143,26 +149,24 @@ const fi = (function() {
       return keys
     },
 
-    values: function(obj) {
+    values: function(collection) {
       // Using for loop
       const values = []
-      for (let key in obj){
-        values.push(obj[key])
+      for (let key in collection){
+        values.push(collection[key])
       }
       return values
 
       // Using the custom 'map' method from above
-      // return this.map(obj, (value) => value)
+      // return this.map(collection, (value) => value)
 
     },
 
-    functions: function(obj) {
+    functions: function(collection) {
       const functionNames = []
-
-      for (let key in obj) {
-        if (typeof obj[key] === "function"){
-          functionNames.push(key)
-        }
+  
+      for (let key in collection) {
+        typeof collection[key] === "function" ? functionNames.push(key) : null
       }
 
       return functionNames.sort()
