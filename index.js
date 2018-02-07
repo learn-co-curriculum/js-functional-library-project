@@ -149,24 +149,24 @@ fi = (function() {
       return keys
     },
 
-    values: function(collection) {
+    values: function(obj) {
       // Using for loop
       const values = []
-      for (let key in collection){
-        values.push(collection[key])
+      for (let key in obj){
+        values.push(obj[key])
       }
       return values
 
       // Using the custom 'map' method from above
-      // return this.map(collection, (value) => value)
+      // return this.map(obj, (value) => value)
 
     },
 
-    functions: function(collection) {
+    functions: function(obj) {
       const functionNames = []
   
-      for (let key in collection) {
-        typeof collection[key] === "function" ? functionNames.push(key) : null
+      for (let key in obj) {
+        typeof obj[key] === "function" ? functionNames.push(key) : null
       }
 
       return functionNames.sort()
