@@ -5,7 +5,7 @@ fi = (function() {
     },
 
     each: function(collection, iteratee) {
-      let newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
+      const newCollection = (collection instanceof Array) ? collection.slice() : Object.values(collection)
 
       for (let idx = 0; idx < newCollection.length; idx++)
         iteratee(newCollection[idx])
@@ -113,7 +113,7 @@ fi = (function() {
     },
 
     uniqSorted: function(collection, iteratee) {
-      let sorted = [collection[0]]
+      const sorted = [collection[0]]
       for (let idx = 1; idx < collection.length; idx++) {
         if (sorted[idx-1] === collection[idx]) continue
         sorted.push(collection[idx])
