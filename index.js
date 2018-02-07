@@ -115,8 +115,8 @@ fi = (function() {
     uniqSorted: function(collection, iteratee) {
       const sorted = [collection[0]]
       for (let idx = 1; idx < collection.length; idx++) {
-        if (sorted[idx-1] === collection[idx]) continue
-        sorted.push(collection[idx])
+        if (sorted[idx-1] !== collection[idx])
+          sorted.push(collection[idx])
       }
       return sorted
     },
