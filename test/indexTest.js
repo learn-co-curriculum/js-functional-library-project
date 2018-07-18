@@ -65,6 +65,10 @@ describe('index.js', function () {
       expect(reduceWithAcc).to.equal(40)
     })
 
+    it('returns the correct reduced value when not passed an accumulator', function () {
+      expect(reduceSansAcc).to.equal(30)
+    })
+
     it('does not modify the original array', function () {
       expect(arraysEqual(unmodifiedTestArr, testArr)).to.equal(true)
     })
@@ -81,11 +85,10 @@ describe('index.js', function () {
     const objB = {b: 'b'}
     const objArr = [{a: 'a'}, objB]
 
-    it('returns true if the value is found', function () {
-      // no reason to think students implementation won't work with reference/value checking but you never know how they are going to structure things
-      expect(fi.find(intArr, findCBGenerator(4))).to.equal(true)
-      expect(fi.find(strArr, findCBGenerator("waychillgoldeneye"))).to.equal(true)
-      expect(fi.find(objArr, findCBGenerator(objB))).to.equal(true)
+    it('returns the value if found', function () {
+      expect(fi.find(intArr, findCBGenerator(4))).to.equal(4)
+      expect(fi.find(strArr, findCBGenerator("waychillgoldeneye"))).to.equal("waychillgoldeneye")
+      expect(fi.find(objArr, findCBGenerator(objB))).to.equal(objB)
     })
 
     it('does not traverse the whole array if the value is found early', function () {
@@ -94,10 +97,10 @@ describe('index.js', function () {
       expect(spy).to.have.been.called.exactly(3)
     })
 
-    it('returns false if the value is not present', function () {
-      expect(fi.find(intArr, findCBGenerator(7))).to.equal(false)
-      expect(fi.find(strArr, findCBGenerator("maxwellisbestmax"))).to.equal(false)
-      expect(fi.find(objArr, findCBGenerator({c: 'c'}))).to.equal(false)
+    it('returns undefined if the value is not present', function () {
+      expect(fi.find(intArr, findCBGenerator(7))).to.equal(undefined)
+      expect(fi.find(strArr, findCBGenerator("maxwellisbestmax"))).to.equal(undefined)
+      expect(fi.find(objArr, findCBGenerator({c: 'c'}))).to.equal(undefined)
     })
 
   })
@@ -188,20 +191,20 @@ describe('index.js', function () {
     function sortIntsBySin(val)   { return Math.sin(val) }
     function sortObjFunction(obj) { return obj.age }
 
-    it('correctly sorts arrays of integers and arrays of strings', function () {
-      expect(arraysEqual(fi.sortBy(unsortedIntArr, sortArrFunction), [1, 3, 5, 8, 8, 9, 11])).to.equal(true)
-      expect(arraysEqual(fi.sortBy(unsortedStringArr, sortArrFunction), ["choux", "coconut", "doge", "maru"])).to.equal(true)
-    })
-
-    it('does not modify the original arrays', function () {
-      fi.sortBy(unsortedIntArr, sortArrFunction)
-      fi.sortBy(unsortedStringArr, sortArrFunction)
-      expect(arraysEqual(unsortedIntArr, [3, 8, 5, 1, 9, 11, 8])).to.equal(true)
-      expect(arraysEqual(unsortedStringArr, ["maru", "choux", "doge", "coconut"])).to.equal(true)
-    })
+    // it('correctly sorts arrays of integers and arrays of strings', function () {
+    //   expect(arraysEqual(fi.sortBy(unsortedIntArr, sortArrFunction), [1, 3, 5, 8, 8, 9, 11])).to.equal(true)
+    //   expect(arraysEqual(fi.sortBy(unsortedStringArr, sortArrFunction), ["choux", "coconut", "doge", "maru"])).to.equal(true)
+    // })
+    //
+    // it('does not modify the original arrays', function () {
+    //   fi.sortBy(unsortedIntArr, sortArrFunction)
+    //   fi.sortBy(unsortedStringArr, sortArrFunction)
+    //   expect(arraysEqual(unsortedIntArr, [3, 8, 5, 1, 9, 11, 8])).to.equal(true)
+    //   expect(arraysEqual(unsortedStringArr, ["maru", "choux", "doge", "coconut"])).to.equal(true)
+    // })
 
     it('correctly sorts arrays of integers with non-standard sort', function () {
-      expect(arraysEqual(fi.sortBy([1, 2, 3, 4, 5, 6], sortIntsBySin), [-0.9589242746631385, -0.7568024953079282, -0.27941549819892586, 0.1411200080598672, 0.8414709848078965, 0.9092974268256817])).to.equal(true)
+      expect(arraysEqual(fi.sortBy([1, 2, 3, 4, 5, 6], sortIntsBySin), [5, 4, 6, 3, 1, 2])).to.equal(true)
     })
 
   })
@@ -234,6 +237,7 @@ describe('index.js', function () {
 
     it('removes duplicate values from an array when an iteratee is applied', function () {
       const newArr = fi.uniq([1, 2, 2, 3, 4, 6, 9], false, (val => val % 3))
+      console.log(newArr)
       expect(arraysEqual(newArr, [1, 2, 3])).to.equal(true)
     })
 
