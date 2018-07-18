@@ -25,7 +25,7 @@ fi = (function() {
       return newArr
     },
 
-    reduce: function(collection, iteratee, acc) {
+    reduce: function(collection, iteratee, acc=0) {
       if (!(collection instanceof Array))
         collection = Object.values(collection)
 
@@ -40,9 +40,9 @@ fi = (function() {
         collection = Object.values(collection)
 
       for (let idx = 0; idx < collection.length; idx++)
-        if (predicate(collection[idx])) return true
+        if (predicate(collection[idx])) return collection[idx]
 
-      return false
+      return undefined
     },
 
     filter: function(collection, predicate) {
@@ -74,24 +74,11 @@ fi = (function() {
       return collection.filter(el => !badBad.has(el))
     },
 
-    // works like insertion sort
-    iSortLast: function(arr) {
-      let currIdx = arr.length-1
-      while(currIdx > 0 && arr[currIdx-1] > arr[currIdx]) {
-        const temp = arr[currIdx-1]
-        arr[currIdx-1] = arr[currIdx]
-        arr[currIdx] = temp
-        currIdx--
-      }
-    },
-
     sortBy: function(collection, callback) {
-      const newArr = []
-      for (let val of collection) {
-        newArr.push(callback(val))
-        this.iSortLast(newArr)
-      }
-      return newArr
+      const newArr = [...collection]
+      return newArr.sort(function(a, b) {
+        return callback(a) - callback(b)
+      })
     },
 
     unpack: function(receiver, arr) {
