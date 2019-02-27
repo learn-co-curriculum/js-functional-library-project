@@ -25,15 +25,22 @@ fi = (function() {
       return newArr
     },
 
-    reduce: function(collection, iteratee, acc=0) {
-      if (!(collection instanceof Array))
-        collection = Object.values(collection)
 
-      for (let idx = 0; idx < collection.length; idx++)
-        acc = iteratee(acc, collection[idx], collection)
+		reduce: function(c = [], callback = () => {}, acc) {
+			let collection = c.slice(0)
 
-      return acc
-    },
+			if (!acc) {
+				acc = collection[0]
+				collection = collection.slice(1)
+			}
+
+			let len = collection.length;
+
+			for (let i = 0; i < len; i++) {
+				acc = callback(acc, collection[i], collection)
+			}
+			return acc;
+		},
 
     find: function(collection, predicate) {
       if (!(collection instanceof Array))
