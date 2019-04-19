@@ -1,4 +1,4 @@
-fi = (function() {
+const fi = (function() {
   return {
     libraryMethod: function() {
       return 'Start by reading https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0'
@@ -158,7 +158,7 @@ fi = (function() {
 
     functions: function(obj) {
       const functionNames = []
-  
+
       for (let key in obj) {
         if (typeof obj[key] === "function"){
           functionNames.push(key)
