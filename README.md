@@ -46,7 +46,7 @@ The point of this exercise is to build your own implementation of [Higher Order 
 
 `fi.each(collection, callback)`
 
-Iterates over a **collection** of elements, passing each element in turn to a **callback** function. Each invocation of **callback** is called with three arguments: (element, index, collection). If **collection** is a JavaScript object, **callback**'s arguments will be (value, key, collection). **Returns the original collection for chaining.**
+Iterates over a **collection** of elements, passing each element in turn to a **callback** function. Each invocation of **callback** is called with one argument. If **collection** is an array, **callback**'s argument will be a value within the array. If **collection** is a JavaScript object, **callback**'s argument will be a value within the object (keys are not passed into **callback**). **Returns the original collection for chaining.**
 
 ```javascript
 fi.each([1, 2, 3], alert);
@@ -59,7 +59,7 @@ fi.each({one: 1, two: 2, three: 3}, alert);
 
 `fi.map(collection, callback)`
 
-Produces a new array of values by mapping each value in **collection** through a transformation function (**callback**). The callback is passed three arguments: the value, then the index (or key) of the iteration, and finally a reference to the entire collection. **Returns a new collection for chaining without modifying the original.**
+Produces a new array of values by mapping each value in **collection** through a transformation function (**callback**). The callback is passed one argument. **Returns a new array for chaining without modifying the original.**
 
 ```javascript
 fi.map([1, 2, 3], function(num){ return num * 3; });
@@ -70,12 +70,14 @@ fi.map({one: 1, two: 2, three: 3}, function(num, key){ return num * 3; });
 
 **fi.reduce**
 
-`fi.reduce(collection, callback, acc)`
+`fi.reduce(collection, callback, [acc])`
 
-Reduce boils down a **collection** of values into a single value. **Acc** (short for accumulator) starts as the initial state of the reduction, and with each successive step it should be accumulate the return value of **callback**. The callback is passed three arguments: the acc, the current value in our iteration (the element in the array), and finally a reference to the entire collection.
+Reduce boils down a **collection** of values into a single value. **Acc** (short for accumulator) starts as the initial state of the reduction, and with each successive step it should be accumulate the return value of **callback**. If there is no accumulator, the initial state is represented by the first value in the array or object. The callback is passed three arguments: the acc, the current value in our iteration (the element in the array or object), and finally a reference to the entire collection.
 
 ```javascript
-var sum = fi.reduce([1, 2, 3], function(acc, val, collection) { return acc + val; }, 0);
+fi.reduce([4,3], function(acc, val, collection) { return acc / val; }, 12);
+=> 1
+fi.reduce([1, 2, 3], function(acc, val, collection) { return acc + val; });
 => 6
 ```
 
@@ -86,7 +88,7 @@ var sum = fi.reduce([1, 2, 3], function(acc, val, collection) { return acc + val
 Looks through each value in the **collection**, returning the first one that passes a truth test (**predicate**), or undefined if no value passes the test. The function returns as soon as it finds an acceptable element, and doesn't traverse the entire collection.
 
 ```javascript
-var even = fi.find([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
+fi.find([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
 => 2
 ```
 
@@ -97,7 +99,7 @@ var even = fi.find([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
 Looks through each value in the **collection**, returning an array of all the values that pass a truth test (**predicate**).
 
 ```javascript
-var evens = fi.filter([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
+fi.filter([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; });
 => [2, 4, 6]
 ```
 
@@ -163,11 +165,6 @@ _If you would like to go deeper and try to construct your own sorting algorithm 
 ```javascript
 fi.sortBy([1, 2, 3, 4, 5, 6], function(num){ return Math.sin(num) });
 => [5, 4, 6, 3, 1, 2];
-
-
-var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
-fi.sortBy(stooges, function(stooge){ return stooge.name });
-=> [{name: 'curly', age: 60}, {name: 'larry', age: 50}, {name: 'moe', age: 40}];
 ```
 
 **fi.flatten (bonus function)**
@@ -200,8 +197,6 @@ fi.uniq([1, 2, 1, 4, 1, 3]);
 fi.uniq([1, 2, 3, 6], false, (x => x % 3));
 => [1, 2, 3]
 ```
-
-## Function
 
 ## Object Functions
 

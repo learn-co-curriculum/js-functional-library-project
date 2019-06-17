@@ -177,24 +177,9 @@ describe('index.js', function () {
   describe('sortBy', function () {
     const unsortedIntArr = [3, 8, 5, 1, 9, 11, 8]
     const unsortedStringArr = ["maru", "choux", "doge", "coconut"]
-    const unsortedObjArr = [
-      {name: "dennis", age: 29},
-      {name: "dee", age: 40},
-      {name: "mac", age: 34},
-      {name: "charlie", age: 32},
-      {name: "frank", age: 72}
-    ]
-    const controlSortedObjArr = [
-      {name: "dennis", age: 29},
-      {name: "charlie", age: 32},
-      {name: "mac", age: 34},
-      {name: "dee", age: 40},
-      {name: "frank", age: 72}
-    ]
 
     function sortArrFunction(val) { return val }
     function sortIntsBySin(val)   { return Math.sin(val) }
-    function sortObjFunction(obj) { return obj.age }
 
     it('correctly sorts arrays of integers and arrays of strings', function () {
       expect(arraysEqual(fi.sortBy(unsortedIntArr, sortArrFunction), [1, 3, 5, 8, 8, 9, 11])).to.equal(true)
@@ -242,7 +227,6 @@ describe('index.js', function () {
 
     it('removes duplicate values from an array when an iteratee is applied', function () {
       const newArr = fi.uniq([1, 2, 2, 3, 4, 6, 9], false, (val => val % 3))
-      console.log(newArr)
       expect(arraysEqual(newArr, [1, 2, 3])).to.equal(true)
     })
 
